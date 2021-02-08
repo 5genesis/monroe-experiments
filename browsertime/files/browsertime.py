@@ -7,7 +7,7 @@
 # Developed for use by the EU H2020 MONROE project
 
 """
-Browsertime uses Selenium NodeJS to drive the browser (latest version of firefox and chrome). 
+Browsertime uses Selenium NodeJS to drive the browser (latest version of firefox and chrome).
 It starts the browser, load a URL, executes configurable Javascripts to collect metrics, collect a HAR file.
 """
 
@@ -73,7 +73,7 @@ EXPCONFIG = {
 	"zmqport": "tcp://172.17.0.1:5556",
 	"modem_metadata_topic": "MONROE.META.DEVICE.MODEM",
 	"dataversion": 1,
-	"dataid": "MONROE.EXP.HEADLESS.BROWSERTIME.CHROME",
+	"dataid": "5GENESIS.EXP.HEADLESS.BROWSERTIME.CHROME",
 	"nodeid": "fake.nodeid",
 	"meta_grace": 120,  # Grace period to wait for interface metadata
 	"exp_grace": 120,  # Grace period before killing experiment
@@ -90,8 +90,8 @@ EXPCONFIG = {
 	     "www.myshopify.com",
 	     "www.google.com.hk",
 	     "www.google.co.in",
-             "www.google.co.jp",	
-             "www.google.com.br",	
+             "www.google.co.jp",
+             "www.google.com.br",
 	     "www.facebook.com"
        ],
         "http_protocols":["h2","h1s","http3"],

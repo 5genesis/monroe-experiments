@@ -23,7 +23,7 @@ The default values are (can be overridden by a /monroe/config):
       "server": "8.8.8.8",  # ping target
       "interval": 1000,  # time in milliseconds between successive packets
       "dataversion": 2,
-      "dataid": "MONROE.EXP.PING",
+      "dataid": "5GENESIS.EXP.PING",
       "size":56,
       "flatten_delimiter": '.',
       "meta_grace": 120,  # Grace period to wait for interface metadata
@@ -63,7 +63,7 @@ The experiment will produce a single line JSON object similar to these (pretty p
    "Iccid": 2332323, # meta_info["ICCID"]
    "Operator": "Telia", # meta_info["Operator"]
    "NodeId" : "9", # exp_config['nodeid']
-   "DataId": "MONROE.EXP.PING",
+   "DataId": "5GENESIS.EXP.PING",
    "DataVersion": 2,
    "SequenceNumber": 70,
    "Rtt": 6.47,
@@ -79,7 +79,7 @@ The experiment will produce a single line JSON object similar to these (pretty p
    "Iccid": 2332323, # meta_info["ICCID"]
    "Operator": "Telia", # meta_info["Operator"]
    "NodeId" : "9", # exp_config['nodeid']
-   "DataId": "MONROE.EXP.PING",
+   "DataId": "5GENESIS.EXP.PING",
    "DataVersion": 2,
    "SequenceNumber": 70,
    "Host": "8.8.8.8",

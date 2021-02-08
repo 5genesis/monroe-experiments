@@ -1,7 +1,7 @@
 # Monroe-browsertime
 
-Monroe-browserime is based on [browsertime](https://github.com/sitespeedio/browsertime) framework 
-that allows us to collect a range of web performance metrics while visiting a target webpage using either Google-chrome or firefox in headless mode. Browsertime uses Selenium NodeJS to drive the browser. 
+Monroe-browserime is based on [browsertime](https://github.com/sitespeedio/browsertime) framework
+that allows us to collect a range of web performance metrics while visiting a target webpage using either Google-chrome or firefox in headless mode. Browsertime uses Selenium NodeJS to drive the browser.
 It starts the browser, load a URL, executes configurable Javascripts to collect metrics such as [Navigation Timing](http://kaaes.github.io/timing/info.html), [User Timing](http://www.html5rocks.com/en/tutorials/webperformance/usertiming/),
 [Resource Timing](http://www.w3.org/TR/resource-timing/), first paint and [RUM Speed Index](https://github.com/WPO-Foundation/RUM-SpeedIndex), [speed index](https://developer.mozilla.org/en-US/docs/Glossary/Speed_index). It also collects a [HAR](http://www.softwareishard.com/blog/har-12-spec/) file that shows all requests/responses on the page. The result of the run is a single JSON file with all the JavaScript metrics collected and HAR informatiom.
 
@@ -18,7 +18,7 @@ The default input values are (can be overridden by a /monroe/config):
 	"zmqport": "tcp://172.17.0.1:5556",
 	"modem_metadata_topic": "MONROE.META.DEVICE.MODEM",
 	"dataversion": 1,
-	"dataid": "MONROE.EXP.HEADLESS.BROWSERTIME",
+	"dataid": "5GENESIS.EXP.HEADLESS.BROWSERTIME",
 	"nodeid": "fake.nodeid",
 	"meta_grace": 120,  # Grace period to wait for interface metadata
 	"exp_grace": 120,  # Grace period before killing experiment
@@ -27,7 +27,7 @@ The default input values are (can be overridden by a /monroe/config):
 	"verbosity": 2,  # 0 = "Mute", 1=error, 2=Information, 3=verbose
 	"resultdir": "/monroe/results/",
 	"modeminterfacename": "InternalInterface",
-	"urls": ['www.instagram.com'], 
+	"urls": ['www.instagram.com'],
 	"http_protocols":["h1s","h2","http3"],
 	"browsers":["chrome","firefox"],
 	"iterations": 1,
@@ -36,9 +36,9 @@ The default input values are (can be overridden by a /monroe/config):
 	}
 ```
 
-For example, using the above inputs (default), the experiment will download the page with different combinations of 
+For example, using the above inputs (default), the experiment will download the page with different combinations of
 three different http protocols and two different source interfaces each time.
-So, it is possible to input required urls, http protocols, iterations, interfaces etc. during 
+So, it is possible to input required urls, http protocols, iterations, interfaces etc. during
 scheduling the experiment.
 
 ## Output
@@ -2052,7 +2052,7 @@ The experiment generates a single JSON file like the following. All the nested o
   "browsertime-har.log.pages.0.title": "https://www.instagram.com run 1",
   "browsertime-har.log.entries.5._priority": "High",
   "browsertime-json.0.browserScripts.0.pageinfo.navigationStartTime": 1608287654814,
-  "DataId": "MONROE.EXP.HEADLESS.BROWSERTIME.CHROME",
+  "DataId": "5GENESIS.EXP.HEADLESS.BROWSERTIME.CHROME",
   "browsertime-har.log.pages.0.pageTimings.onLoad": 1747.771,
   "browsertime-har.log.entries.23.startedDateTime": "2020-12-18T10:34:16.908Z",
   "browsertime-har.log.entries.7.timings._queued": 12.423,

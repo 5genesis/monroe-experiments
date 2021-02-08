@@ -10,7 +10,7 @@ Simple wrapper to run iperf/iperf3 on a given host.
 
 The script will run on all specified interfaces.
 All default values are configurable from the scheduler.
-The output will be formated into a json object (not suitable for db import).
+The output will be formated into a json object suitable for db import.
 """
 
 import zmq

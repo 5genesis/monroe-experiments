@@ -10,8 +10,7 @@ Simple wrapper to run fping on a given host.
 
 The script will run forever on the specified interface.
 All default values are configurable from the scheduler.
-The output will be formated into a json object suitable for storage in the
-MONROE db.
+The output will be formated into a json object suitable for storage in a db.
 """
 import zmq
 import json
@@ -41,7 +40,7 @@ EXPCONFIG = {
         "interval": 1000,  # time in milliseconds between successive packets
         "dataversion": 2,
 	"size":56,
-        "dataid": "MONROE.EXP.PING",
+        "dataid": "5GENESIS.EXP.PING",
         "flatten_delimiter": '.',
         "meta_grace": 120,  # Grace period to wait for interface metadata
         "ifup_interval_check": 5,  # Interval to check if interface is up
