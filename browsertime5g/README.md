@@ -7,7 +7,7 @@ It starts the browser, load a URL, executes configurable Javascripts to collect 
 
 
 ## Input
-The default input values are (can be overridden by a /monroe/config):
+The default (example) input values are (can be overridden by a /monroe/config):
 
 ```
 {
