@@ -31,8 +31,8 @@ The default input values are (can be overridden by a /monroe/config):
 	"http_protocols":["h1s","h2","http3"],
 	"browsers":["chrome","firefox"],
 	"iterations": 1,
-	"allowed_interfaces": ["op0","op1"],  # Interfaces to run the experiment on
-	"interfaces_without_metadata": ["eth0"]  # Manual metadata on these IF
+	"allowed_interfaces": ["ens160", "ens192", "eth0"],  # Interfaces to run the experiment on
+	"interfaces_without_metadata": ["ens160", "ens192", "eth0"]  # Manual metadata on these IF
 	}
 ```
 
