@@ -26,13 +26,16 @@ The default input values are (can be overridden by a /monroe/config):
 	"time_between_experiments": 5,
 	"verbosity": 2,  # 0 = "Mute", 1=error, 2=Information, 3=verbose
 	"resultdir": "/monroe/results/",
+        "flatten_delimiter": '.',
 	"modeminterfacename": "InternalInterface",
-	"urls": ['www.instagram.com'],
-	"http_protocols":["h1s","h2","http3"],
-	"browsers":["chrome","firefox"],
-	"iterations": 1,
+        "urls": [
+             "www.instagram.com"
+       ],
+        "http_protocols":["h2","h1s","http3"],
+        "browsers":["chrome","firefox"],
+        "iterations": 1,
 	"allowed_interfaces": ["ens160", "ens192", "eth0"],  # Interfaces to run the experiment on
-	"interfaces_without_metadata": ["ens160", "ens192", "eth0"]  # Manual metadata on these IF
+	"interfaces_without_metadata": ["eth0", "ens160", "ens192"]  # Manual metadata on these IF
 	}
 ```
 
