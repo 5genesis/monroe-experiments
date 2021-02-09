@@ -73,7 +73,7 @@ EXPCONFIG = {
 	"zmqport": "tcp://172.17.0.1:5556",
 	"modem_metadata_topic": "MONROE.META.DEVICE.MODEM",
 	"dataversion": 1,
-	"dataid": "5GENESIS.EXP.HEADLESS.BROWSERTIME.CHROME",
+	"dataid": "5GENESIS.EXP.HEADLESS.BROWSERTIME",
 	"nodeid": "fake.nodeid",
 	"meta_grace": 120,  # Grace period to wait for interface metadata
 	"exp_grace": 120,  # Grace period before killing experiment
@@ -97,7 +97,7 @@ EXPCONFIG = {
         "http_protocols":["h2","h1s","http3"],
         "browsers":["chrome","firefox"],
         "iterations": 1,
-	"allowed_interfaces": ["ens160", "ens192", "eth0","op0","op1","op2"],  # Interfaces to run the experiment on
+	"allowed_interfaces": ["ens160", "ens192", "eth0"],  # Interfaces to run the experiment on
 	"interfaces_without_metadata": ["eth0", "ens160", "ens192"]  # Manual metadata on these IF
 	}
 
