@@ -8,8 +8,8 @@ ENV BROWSERTIME_visualMetrics true
 # DumbInit
 ENV DI_VER 1.2.2
 
-RUN pip install flatten_json pyzmq
-RUN apt install -y python-psutil fping python-netifaces python-dateutil curl dnsutils
+RUN pip install "flatten_json==0.1.7" pyzmq
+RUN apt update && apt install -y python-psutil fping python-netifaces python-dateutil curl dnsutils
 RUN curl -L -o dumb-init.deb "https://github.com/Yelp/dumb-init/releases/download/v${DI_VER}/dumb-init_${DI_VER}_amd64.deb" && dpkg -i dumb-init.deb
 
 RUN mkdir -p /monroe/results

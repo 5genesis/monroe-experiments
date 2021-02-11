@@ -2,7 +2,7 @@ FROM monroe/base
 
 MAINTAINER Jonas.Karlsson@kau.se
 
-RUN pip install flatten_json
+RUN pip install "flatten_json==0.1.7"
 
 COPY files/* /opt/monroe/
 
