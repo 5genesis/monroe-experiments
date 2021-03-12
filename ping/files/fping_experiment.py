@@ -14,14 +14,11 @@ The output will be formated into a json object suitable for storage in a db.
 """
 import zmq
 import json
-import sys
 from multiprocessing import Process, Manager
 import subprocess
 import netifaces
 import re
 import time
-import signal
-import monroe_exporter
 from flatten_json import flatten
 
 # Configuration
@@ -39,7 +36,7 @@ EXPCONFIG = {
         "server": "8.8.8.8",  # ping target
         "interval": 1000,  # time in milliseconds between successive packets
         "dataversion": 2,
-	"size":56,
+        "size": 56,
         "dataid": "5GENESIS.EXP.PING",
         "flatten_delimiter": '.',
         "meta_grace": 120,  # Grace period to wait for interface metadata
@@ -51,6 +48,7 @@ EXPCONFIG = {
         "interfacename": "eth0",  # Interface to run the experiment on
         "interfaces_without_metadata": "eth0,wlan0"  # Manual metadata on these IF
         }
+
 
 def get_recursively(search_dict, field):
     """
@@ -76,6 +74,7 @@ def get_recursively(search_dict, field):
                         fields_found.append(another_result)
     return fields_found
 
+
 def run_exp(meta_info, expconfig):
 
     global FPING_PROCESS
@@ -90,7 +89,7 @@ def run_exp(meta_info, expconfig):
     cmd = ["fping",
            "-I", ifname,
            "-D",
-	   "-b",str(expconfig['size']),
+           "-b", str(expconfig['size']),
            "-c", "1",
            server]
     # Regexp to parse fping ouput from command
@@ -138,11 +137,11 @@ def run_exp(meta_info, expconfig):
         # Flatten the output
         problematic_keys = get_recursively(msg, flatten_delimiter)
         if problematic_keys and expconfig['verbosity'] > 1:
-            print ("Warning: these keys might be compromised by flattening:"
-                   " {}".format(problematic_keys))
+            print("Warning: these keys might be compromised by flattening:"
+                  " {}".format(problematic_keys))
         msg = flatten(msg, flatten_delimiter)
         if expconfig['verbosity'] > 2:
-            print msg
+            print(msg)
         if not DEBUG:
             # We have already initalized the exporter with the export dir
             monroe_exporter.save_output(msg)
@@ -150,7 +149,7 @@ def run_exp(meta_info, expconfig):
         time.sleep(interval)
     # Cleanup
     if expconfig['verbosity'] > 1:
-        print "Cleaning up fping process"
+        print("Cleaning up fping process")
     popen.stdout.close()
     popen.terminate()
     popen.kill()
@@ -178,8 +177,8 @@ def metadata(meta_ifinfo, ifname, expconfig):
                     meta_ifinfo[key] = value
         except Exception as e:
             if expconfig['verbosity'] > 0:
-                print ("Cannot get modem metadata in http container"
-                       "error : {} , {}").format(e, expconfig['guid'])
+                print("Cannot get modem metadata in http container"
+                      "error : {} , {}".format(e, expconfig['guid']))
             pass
 
 
@@ -235,7 +234,7 @@ if __name__ == '__main__':
             with open(CONFIGFILE) as configfd:
                 EXPCONFIG.update(json.load(configfd))
         except Exception as e:
-            print "Cannot retrive expconfig {}".format(e)
+            print("Cannot retrive expconfig {}".format(e))
             raise e
     else:
         # We are in debug state always put out all information
@@ -257,12 +256,13 @@ if __name__ == '__main__':
         EXPCONFIG['modeminterfacename']
         str(EXPCONFIG['flatten_delimiter'])
     except Exception as e:
-        print "Missing expconfig variable {}".format(e)
+        print("Missing expconfig variable {}".format(e))
         raise e
 
     if EXPCONFIG['verbosity'] > 2:
-        print EXPCONFIG
-        print if_without_metadata
+        print(EXPCONFIG)
+        print(if_without_metadata)
+
     # Create a process for getting the metadata
     # (could have used a thread as well but this is true multiprocessing)
     meta_info, meta_process = create_meta_process(ifname, EXPCONFIG)
@@ -295,13 +295,13 @@ if __name__ == '__main__':
         if (check_if(ifname) and check_meta(meta_info, meta_grace, EXPCONFIG)):
             # We are all good
             if EXPCONFIG['verbosity'] > 2:
-                print "Interface {} is up".format(ifname)
+                print("Interface {} is up".format(ifname))
             if exp_process.is_alive() is False:
                 exp_process.start()
         elif exp_process.is_alive():
             if EXPCONFIG['verbosity'] > 2:
-                print ("Interface {} is down and "
-                       "experiment are running").format(ifname)
+                print("Interface {} is down and "
+                      "experiment are running".format(ifname))
             # Interfaces down and we are running
             exp_process.terminate()
             exp_process = create_exp_process(meta_info, EXPCONFIG)

@@ -41,9 +41,10 @@ EXPCONFIG = {
         "protocol": "tcp",
         "duration": 10,
         "bandwidth": 0,   # Default for TCP for UDP is 1M default
-        "interfaces": "eth0" ,  # delimited by ',', eg "eth0,eth1"
+        "interfaces": "eth0",  # delimited by ',', eg "eth0,eth1"
         "iperfversion": 3
         }
+
 
 def get_recursively(search_dict, field):
     """
@@ -69,26 +70,30 @@ def get_recursively(search_dict, field):
                         fields_found.append(another_result)
     return fields_found
 
+
 def check_if(ifname):
     """Check if interface is up and have got an IP address."""
     return (ifname in netifaces.interfaces() and
             netifaces.AF_INET in netifaces.ifaddresses(ifname))
 
+
 def run_iperf3(server, sourceip, protocol, duration, bandwidth):
     """Runs iperf3 and returns the resluts as a dictionary."""
-    cmd = [ "iperf3",
-            "--json",
-            "--bind", sourceip,
-            "--time", duration,
-            "--bandwidth", bandwidth,
-            "--client", server
-            ]
+    cmd = ["iperf3",
+           "--json",
+           "--bind", sourceip,
+           "--time", duration,
+           "--bandwidth", bandwidth,
+           "--client", server
+           ]
+
     if protocol == "udp":
         cmd.append("--udp")
 
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     msg = json.load(popen.stdout)
     return msg
+
 
 def run_iperf(server, sourceip, protocol, duration, bandwidth):
     """
@@ -104,22 +109,22 @@ def run_iperf(server, sourceip, protocol, duration, bandwidth):
     transferred_bytes,
     bits_per_second
     """
-    cmd = [ "iperf",
-            "--enhancedreports",
-            "--reportstyle", "C",
-            "--time", duration,
-            "--bandwidth", bandwidth,
-            "--bind", sourceip,
-            "--client", server
-            ]
+    cmd = ["iperf",
+           "--enhancedreports",
+           "--reportstyle", "C",
+           "--time", duration,
+           "--bandwidth", bandwidth,
+           "--bind", sourceip,
+           "--client", server
+           ]
     if protocol == "udp":
         cmd.append("--udp")
-    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1)
     output = popen.stdout.readline().rstrip()
-    if output and  len(output.split(',')) > 8:
+    if output and len(output.split(',')) > 8:
         csv = output.split(',')
         msg = {
-            "timestamp" : float(csv[0]),
+            "timestamp": float(csv[0]),
             "source_address": str(csv[1]),
             "source_port": int(csv[2]),
             "destination_address": str(csv[3]),
@@ -136,7 +141,6 @@ def run_iperf(server, sourceip, protocol, duration, bandwidth):
     return msg
 
 
-
 if __name__ == '__main__':
     """The main thread control the processes. """
 
@@ -144,14 +148,14 @@ if __name__ == '__main__':
         # Try to get the experiment config as provided by the scheduler
         try:
             with open(CONFIGFILE) as configfd:
-		fileconfig = json.load(configfd)
-		#Set the default values for iperf
-		if 'bandwidth' not in fileconfig and fileconfig.get('protocol') == 'udp':
-		  fileconfig['bandwidth'] = '1M'
+                fileconfig = json.load(configfd)
+                # Set the default values for iperf
+                if 'bandwidth' not in fileconfig and fileconfig.get('protocol') == 'udp':
+                    fileconfig['bandwidth'] = '1M'
 
                 EXPCONFIG.update(fileconfig)
         except Exception as e:
-            print ("Cannot retrive expconfig {}".format(e))
+            print("Cannot retrive expconfig {}".format(e))
             raise e
     else:
         # We are in debug state always put out all information
@@ -174,12 +178,12 @@ if __name__ == '__main__':
         bandwidth = str(EXPCONFIG['bandwidth'])
         flatten_delimiter = str(EXPCONFIG['flatten_delimiter'])
     except Exception as e:
-        print ("Missing or wrong format on expconfig variable {}".format(e))
+        print("Missing or wrong format on expconfig variable {}".format(e))
         raise e
 
     if verbosity > 2:
-        print EXPCONFIG
-        print interfaces
+        print(EXPCONFIG)
+        print(interfaces)
 
     # Attach to the ZeroMQ socket as a subscriber and start listen to
     # metadata, this does notning for now
@@ -190,26 +194,26 @@ if __name__ == '__main__':
     # End Attach
 
     if verbosity > 1:
-        print ("[{}] Starting experiment".format(datetime.now()))
+        print("[{}] Starting experiment".format(datetime.now()))
 
     for ifname in interfaces:
         if check_if(ifname):
             # We are all good
-            ips = [x.get('addr',None) for x in netifaces.ifaddresses(ifname)[netifaces.AF_INET]]
+            ips = [x.get('addr', None) for x in netifaces.ifaddresses(ifname)[netifaces.AF_INET]]
             if verbosity > 2:
-                print ("Interface {} is up with ip(s) : {}".format(ifname, ips))
+                print("Interface {} is up with ip(s) : {}".format(ifname, ips))
 
             for ip in ips:
                 if verbosity > 2:
-                        print (("Executing iperf{version}(3/2) from {ifname}({ip}) "
-                                "to {server} using {protocol} with {bandwidth} for "
-                                "{duration} seconds").format(version=version,
-                                                            ifname=ifname,
-                                                            ip=ip,
-                                                            server=server,
-                                                            protocol=protocol,
-                                                            duration=duration,
-                                                            bandwidth=bandwidth))
+                    print(("Executing iperf{version}(3/2) from {ifname}({ip}) "
+                           "to {server} using {protocol} with {bandwidth} for "
+                           "{duration} seconds").format(version=version,
+                                                        ifname=ifname,
+                                                        ip=ip,
+                                                        server=server,
+                                                        protocol=protocol,
+                                                        duration=duration,
+                                                        bandwidth=bandwidth))
 
                 try:
                     if version == 3:
@@ -225,7 +229,7 @@ if __name__ == '__main__':
                                             duration=duration,
                                             bandwidth=bandwidth)
                 except Exception as e:
-                    print "Could not execute iperf{}, error: {}".format(version,e)
+                    print("Could not execute iperf{}, error: {}".format(version, e))
                     raise e
                 msg = {
                     "Timestamp": time.time(),
@@ -239,7 +243,7 @@ if __name__ == '__main__':
                 }
                 if protocol == "udp" and version != 3:
                     msg["Note"] = "Warning: UDP results is only stable with iperf3"
-                    print ("Warning: UDP results is only stable with iperf3")
+                    print("Warning: UDP results is only stable with iperf3")
 
                 path = ("{resultdir}/{dataid}.{version}.{protocol}"
                         "_{nodeid}_{ts}_{ifname}_{ip}.json").format(resultdir=resultdir,
@@ -254,15 +258,15 @@ if __name__ == '__main__':
                 # Flatten the output
                 problematic_keys = get_recursively(msg, flatten_delimiter)
                 if problematic_keys and verbosity > 1:
-                    print ("Warning: these keys might be compromised by flattening:"
-                           " {}".format(problematic_keys))
+                    print("Warning: these keys might be compromised by flattening:"
+                          " {}".format(problematic_keys))
                 msg = flatten(msg, flatten_delimiter)
                 if verbosity > 2:
-                    print ("Saving experiment results to {}".format(path))
-                    print (json.dumps(msg,indent=4, sort_keys=True))
+                    print("Saving experiment results to {}".format(path))
+                    print(json.dumps(msg, indent=4, sort_keys=True))
 
                 # Save the file
                 with open(path, 'w') as outfile:
                     json.dump(msg, outfile)
     if verbosity > 1:
-        print ("[{}] Finished the experiment".format(datetime.now()))
+        print("[{}] Finished the experiment".format(datetime.now()))
