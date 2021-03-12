@@ -340,7 +340,7 @@ if __name__ == '__main__':
                 "Results": exp_res,
                 "NRStalls": stalls,
                 "FramesonRepLevel": switches,
-                "NRRepLevelSwitches": len(switches),
+                "NRRepLevelSwitches": len(switches) - 1,
                 "NRFrames": len(exp_res)
                 }
 
