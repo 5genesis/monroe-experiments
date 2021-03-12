@@ -30,6 +30,7 @@ import netifaces as ni
 from flatten_json import flatten
 import os
 import re
+from collections import Counter, Iterable
 
 # Configuration
 DEBUG = False
@@ -49,7 +50,7 @@ EXPCONFIG = {
         "resultdir": "/monroe/results/",
         "flatten_delimiter": '.',
         "allowed_interfaces": ["ens160", "ens192", "eth0"],  # Interfaces to run the experiment
-        # "url": "http://143.239.75.241/~jq5/www_dataset_temp/x264_4sec/bbb_10min/DASH_Files/VOD/bbb_enc_10min_x264_dash.mpd", # www.cs.ucc.ie
+        #"url": "http://143.239.75.241/~jq5/www_dataset_temp/x264_4sec/bbb_10min/DASH_Files/VOD/bbb_enc_10min_x264_dash.mpd",  # www.cs.ucc.ie
         "url": "http://panoplay.duckdns.org/abs/stream/out.mpd",
         "duration": 900,  # If 0 or less wait until video is done
         }
@@ -65,9 +66,9 @@ def get_recursively(search_dict, field):
     fields_found = []
 
     for key, value in search_dict.iteritems():
-        if field in key:
+        if isinstance(key, Iterable) and field in key:
             fields_found.append(key)
-        elif isinstance(value, dict):
+        if isinstance(value, dict):
             results = get_recursively(value, field)
             for result in results:
                 fields_found.append(result)
@@ -327,6 +328,8 @@ if __name__ == '__main__':
             print("Could not execute dashc, error: {}".format(e))
             raise e
 
+        stalls = sum(x['Stall_Dur'] for x in exp_res if x['Stall_Dur'] > 0)
+        switches = dict(Counter(x['Rep_Level'] for x in exp_res))
         msg = {
                 "Timestamp": exp_ts,
                 "Guid": guid,
@@ -334,7 +337,11 @@ if __name__ == '__main__':
                 "DataVersion": dataversion,
                 "NodeId": nodeid,
                 "Interface": ifname,
-                "Results": exp_res
+                "Results": exp_res,
+                "NRStalls": stalls,
+                "FramesonRepLevel": switches,
+                "NRRepLevelSwitches": len(switches),
+                "NRFrames": len(exp_res)
                 }
 
         path = ("{resultdir}/"
